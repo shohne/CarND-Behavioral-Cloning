@@ -68,11 +68,6 @@ def telemetry(sid, data):
         print(steering_angle, throttle)
         send_control(steering_angle, throttle)
 
-        # save frame
-        if args.image_folder != '':
-            timestamp = datetime.utcnow().strftime('%Y_%m_%d_%H_%M_%S_%f')[:-3]
-            image_filename = os.path.join(args.image_folder, timestamp)
-            image.save('{}.jpg'.format(image_filename))
     else:
         # NOTE: DON'T EDIT THIS.
         sio.emit('manual', data={}, skip_sid=True)
@@ -102,11 +97,11 @@ if __name__ == '__main__':
         help='Path to model h5 file. Model should be on the same path.'
     )
     parser.add_argument(
-        'image_folder',
+        'speed',
         type=str,
         nargs='?',
         default='',
-        help='Path to image folder. This is where the images from the run will be saved.'
+        help='desired speed.'
     )
     args = parser.parse_args()
 
@@ -121,16 +116,9 @@ if __name__ == '__main__':
 
     model = load_model(args.model)
 
-    if args.image_folder != '':
-        print("Creating image folder at {}".format(args.image_folder))
-        if not os.path.exists(args.image_folder):
-            os.makedirs(args.image_folder)
-        else:
-            shutil.rmtree(args.image_folder)
-            os.makedirs(args.image_folder)
-        print("RECORDING THIS RUN ...")
-    else:
-        print("NOT RECORDING THIS RUN ...")
+    if args.speed != '':
+        print ('setting desired speed to ', float(args.speed))
+        controller.set_desired(float(args.speed))
 
     # wrap Flask application with engineio's middleware
     app = socketio.Middleware(sio, app)
