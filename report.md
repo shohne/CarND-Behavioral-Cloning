@@ -1,39 +1,41 @@
 # **Behavioral Cloning Report**
 
 The goals of this project are:
-1. To build a model to drive the [Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim);
-* To define and obtain the appropriate dataset to train the driver model
+* To build a model to drive the [Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim);
+* To define and obtain the appropriate dataset to train the driver model;
 * To evaluate the proposed solution on simulator.
 
 ### Pipeline
-The goal is predict the steer to drive [Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim). To perform this task, the driver needs to know the Car state on the road, in fact, Simulator captures and send some information to the controller. The controller has access to:
+The goal is predict the steering angle to drive [Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim). To perform this task, the driver needs to know the Car state on the road, in fact, simulator captures and send some information to the controller. It has acccess to:
 * current speed;
 * current throttle;
 * current steering angle;
 * current images road taken from 3 cameras inside the Car.
 
-The controller is a program that using these data needs to compute throttle and steering angle. It sends these data and simulator is responsible to compute the next Car state what begins the circle:
+The controller is a program that using these data needs to compute throttle and steering angle. It sends these data to simulator that updates its state. The continuous execution is like:
 
 **Receive State** Car --> **Predict** throttle and steering --> **Send control** message to simulator
 
-again.
+that repeats over and over.
 
-The crucial task is **predict** and to achieve it, we have trained a **Deep Learning Model**. As we known, **Machine Learning** try to *learn* to do a task from a lot of data that shows the expected behavior. To acomplish this, we have drove the simulator in **training mode** capturing relevent information (camera images and steering angle). The idea is that the model could mimic the behavior given by examples.
+The crucial task is **predict** and, to achieve it, we have trained a **Deep Learning Model**. As we known, **Machine Learning** try to *learn* to perform a task from a lot of data that shows the expected behavior. To accomplish this, we have drove the simulator in **training mode** capturing relevent information (camera images and steering angle). The idea is that the model could mimic the behavior given by examples.
 
 ### Model Architecture
+
 At a rate of 15 Hz in training mode, simulator could give us following information:
-* Image from center camera. This image focus on the road and is 320 pixels wide per 160 pixels height, it is 24 bits colorful per pixel image as:
+
+* Image from center camera. This image focus on the road and is 320 pixels wide per 160 pixels height with 24 bits colorful depth per pixel. An typical image is like:
 
 ![example image](example_image.jpg)
 
 * Images from left and right camera;
 * current speed, throttle and steering angle.
 
-The proposed model uses only the center image and try to predict the steering angle as the diagram:
+**The proposed model uses only the center image** and try to predict the steering angle as the diagram:
 
 ![Driver Model](model.png)
 
-We have used [keras](https://keras.io/) to define the model. Following table explicit each layer properties:
+We have used [keras](https://keras.io/) to define the model. Following table shows each layer:
 
 
 Layer (type) | Kernel | Filters | Stride | Output Shape | Param #   
@@ -64,17 +66,17 @@ To train the model there should be a directory **data** with file **driving_log.
 * filename center image;
 * filename right image;
 * filename left image;
-* steer;
+* steering angle;
 * acceleration;
 * break;
 * speed;
 
-We are using only center image and steer data, then it is OK to have fake data in filename right, left image, acceleration, break and speed. [Dataset file](https://s3-us-west-1.amazonaws.com/carnd-dataset-hohne/dataset_carnd_behavioral_cloning.zip) has the data used to obtain the trained [model.h5](model.h5). It has datapoints from 5 sources:
+We are using only center image and steering angle data, then it is OK to have fake data in filename right, left image, acceleration, break and speed. [Dataset file](https://s3-us-west-1.amazonaws.com/carnd-dataset-hohne/dataset_carnd_behavioral_cloning.zip) has the data used to obtain the trained [model.h5](model.h5). It has datapoints from 5 sources:
 
 * dataset provided by Udacity that contains data captured driving on track 1 (~ 8k datapoints);
-* driving on track 1 trying to keep the center of the lane (~ 2k datapoints);
+* driving on track 1 trying to keep at the center of the lane (~ 2k datapoints);
 * driving on track 1 while trying to recover to the center of the lane (~ 2k datapoints);
-* driving on track 2 trying to keep the center of the lane (~ 8k datapoints);
+* driving on track 2 trying to keep at the center of the lane (~ 8k datapoints);
 * driving on track 2 while trying to recover to the center of the lane (~ 2k datapoints).
 
 ### Train Procedure
@@ -84,7 +86,7 @@ First, script **model.py** try to load the dataset, if it could not to find it, 
 * validation dataset (10%);
 * test dataset (20%).
 
-After, verify if a pretrained model exists (file [model.h5](model.h5)), if it exists, load it. If there is not a previous model.h5 file, build a new model.
+After, verify if a pre-trained model exists (file [model.h5](model.h5)), if this is true, load file model. If there is not a previous model.h5 file, build a fresh model from **buildModel** function.
 
 Next step, starts to train the model calling the **get_data_generador** to provide data for each minibatch. We have choose [stochastic gradient descent](https://en.wikipedia.org/wiki/Stochastic_gradient_descent) with hyperparameters:
 
@@ -122,7 +124,7 @@ We have modified the original **drive.py** script to allow change the desired sp
 
 [![Track 2](example_image.jpg)](video_track_2.mp4)
 
-A more challenge task is to drive on track 2 at full speed (30) as:
+The final challenge task is to drive on track 2 at full speed (30) as:
 
 ```
 python drive.py model.h5
@@ -132,5 +134,4 @@ That result in video:
 
 [![Track 2 - Full Speed](example_image.jpg)](video_track_3.mp4)
 
-
-At full speed, we could see that drive is dangerous and, eventually, causes an accident.
+At full speed, we could see that drive is dangerous and, eventually, crash.

@@ -6,7 +6,7 @@ This repo contains the code written to complete the project **Behaviorial Clonin
 
 Prerequisites
 ---
-To run this project, you need [Anaconda 4.3.30](https://anaconda.org/conda-canary/conda/files?version=4.3.30) installed.
+To run this project, you need [Anaconda 4.5.1](https://anaconda.org/conda-canary/conda/files?version=4.5.1) installed.
 
 Installation
 ---
@@ -18,9 +18,9 @@ Change current directory:
 ```
 cd CarND-Behavioral-Cloning
 ```
-Create a conda environment with all dependencies:
+Create the conda environment with all dependencies:
 ```
-conda env create -f environment.yaml
+conda env create -f environment.yml
 ```
 The name of created environment is *carnd-behaviorial-cloning-hohne*.
 
@@ -30,7 +30,7 @@ source activate carnd-behaviorial-cloning-hohne
 ```
 Running the Simulator
 ---
-File **model.h5** has a pretrained keras model that could be used to control steer when driving. To use it, first launch [Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim) in  **Autonomous Mode** and select track 1. Now, in previous terminal, execute python program that send sign controls to the simulator:
+File **model.h5** has a pretrained keras model that could be used to control steer when driving. To use it, first launch [Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim) in  **Autonomous Mode** and select track 1. Now, in terminal, execute python program that send control signals to the simulator:
 ```
 python drive.py model.h5
 ```
@@ -47,16 +47,16 @@ python drive.py model.h5 25
 
 List of Main Files
 ---
-* **drive.py** python program responsible to receive images of the simulator and predict steer to keep car on track;
-* **model.py** python script that build neural model in keras and train it;
+* **drive.py** python program responsible to receive images from the simulator and predict steering angle to keep car on track;
+* **model.py** python script that build keras neural model and train it;
 * **model.h5** pretrained keras model (using *model.py*);
-* **video_1.mp3** recorded video of simulator in **Autonomous Mode** driving on track 1 and using given *model.h5* trained model;
-* **video_2.mp3** recorded video of simulator in **Autonomous Mode** driving on track 2 and using given *model.h5* trained model;
-* **data** (directory) must contain dataset file *driving_log.csv* and IMG folder with captured images and labels;
-* **environment.yaml** python dependencies;
+* **video_1.mp3** recorded video of simulator in **Autonomous Mode** driving on track 1 and using given *model.h5*;
+* **video_2.mp3** recorded video of simulator in **Autonomous Mode** driving on track 2 and using given *model.h5*;
+* **data** (directory) must contain dataset file **driving_log.csv** and **IMG** folder with captured images and labels;
+* **environment.yml** python dependencies;
 * **README.md**;
-* [**report.md**](report.md)
+* [**report.md**](report.md).
 
 Train and Implementation Details
 ---
-To know how model.h5 was trained and implementation details, please visit [report](report.md).
+To know how [model.h5](model.h5) was trained and implementation details, please visit [report](report.md).
