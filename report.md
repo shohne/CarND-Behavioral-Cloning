@@ -21,8 +21,8 @@ again.
 The crucial task is **predict** and to achieve it, we have trained a **Deep Learning Model**. As we known, **Machine Learning** try to *learn* to do a task from a lot of data that shows the expected behavior. To acomplish this, we have drove the simulator in **training mode** capturing relevent information (camera images and steering angle). The idea is that the model could mimic the behavior given by examples.
 
 ### Model Architecture
-At a rate of 20Hz in training mode, simulator could give us following information:
-* Image from center camera. This image focus on the road and is 320 pixels wide versus 160 pixels height, it is 24 bits colorful per pixel image as:
+At a rate of 15 Hz in training mode, simulator could give us following information:
+* Image from center camera. This image focus on the road and is 320 pixels wide per 160 pixels height, it is 24 bits colorful per pixel image as:
 
 ![example image](example_image.jpg)
 
@@ -69,13 +69,13 @@ To train the model there should be a directory **data** with file **driving_log.
 * break;
 * speed;
 
-We are using only center image and steer data, then it is OK to have fake data in filename right, left image, acceleration, break and speed. [Dataset file](https://s3-us-west-1.amazonaws.com/carnd-dataset-hohne/dataset_carnd_behavioral_cloning.zip) has the data used to obtain the trained [model.h5](model.h5). It has 46260 datapoints from 5 sources:
+We are using only center image and steer data, then it is OK to have fake data in filename right, left image, acceleration, break and speed. [Dataset file](https://s3-us-west-1.amazonaws.com/carnd-dataset-hohne/dataset_carnd_behavioral_cloning.zip) has the data used to obtain the trained [model.h5](model.h5). It has datapoints from 5 sources:
 
-* dataset provided by Udacity that contains data captured driving on track 1 ( datapoints 8036);
-* driving on track 1 trying to keep the center of the lane (2085 datapoints);
-* driving on track 1 while trying to recover to the center of the lane ( datapoints);
-* driving on track 2 trying to keep the center of the lane ( datapoints);
-* driving on track 2 while trying to recover to the center of the lane ( datapoints).
+* dataset provided by Udacity that contains data captured driving on track 1 (~ 8k datapoints);
+* driving on track 1 trying to keep the center of the lane (~ 2k datapoints);
+* driving on track 1 while trying to recover to the center of the lane (~ 2k datapoints);
+* driving on track 2 trying to keep the center of the lane (~ 8k datapoints);
+* driving on track 2 while trying to recover to the center of the lane (~ 2k datapoints).
 
 ### Train Procedure
 First, script **model.py** try to load the dataset, if it could not to find it, then it is downloaded from Internet. After, dataset is splitted in:
@@ -108,7 +108,7 @@ python drive.py model.h5
 
 This command will try to control simulator at speed 30. The result video could be seen in:
 
-![Track 1](video_track_1.mp4)
+[![Track 1](example_image.jpg)](video_track_1.mp4)
 
 This video shown only the first lap, but the model is able to drive for much more time (at least 30 minutes).
 
@@ -120,16 +120,17 @@ python drive.py model.h5 25
 
 We have modified the original **drive.py** script to allow change the desired speed, in this case to 25. The recorded video is:
 
-![Track 2](video_track_2.mp4)
+[![Track 2](example_image.jpg)](video_track_2.mp4)
 
 A more challenge task is to drive on track 2 at full speed (30) as:
 
 ```
-python drive.py model.h5 25
+python drive.py model.h5
 ```
 
 That result in video:
 
-![Track 3](video_track_3.mp4)
+[![Track 2 - Full Speed](example_image.jpg)](video_track_3.mp4)
+
 
 At full speed, we could see that drive is dangerous and, eventually, causes an accident.

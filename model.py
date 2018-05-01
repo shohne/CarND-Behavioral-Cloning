@@ -135,8 +135,7 @@ model.compile(optimizer=sgd, loss='mean_squared_error')
 
 # save trained model after each epoch
 callbacks_list = [
-    keras.callbacks.ModelCheckpoint(filepath='model.h5', monitor='val_loss', save_best_only=False),
-    avisala.Avisala_Callback('ios')
+    keras.callbacks.ModelCheckpoint(filepath='model.h5', monitor='val_loss', save_best_only=False)
 ]
 
 # split indicex dataset
