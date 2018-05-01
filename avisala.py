@@ -33,6 +33,7 @@ class Avisala_Callback(keras.callbacks.Callback):
 
 
     def on_train_begin(self, logs={}):
+        print ('self.params', self.params)
         self.logs = []
         if self.notify_train_begin:
             notification = dict()
@@ -59,6 +60,7 @@ class Avisala_Callback(keras.callbacks.Callback):
         return
 
     def on_epoch_begin(self, epoch, logs={}):
+        print ('self.params', self.params)
         self.logs.append(logs)
         if self.notify_epoch_begin:
             notification = dict()
@@ -66,6 +68,7 @@ class Avisala_Callback(keras.callbacks.Callback):
             notification['model'] = self.model.name
             notification['event'] = 'on_epoch_begin'
             notification['epoch'] = str(epoch)
+            notification['epochs'] = str(self.params['epochs'])
             notification['train_loss'] = str(logs.get('loss'))
             notification['validation_loss'] = str(logs.get('val_loss'))
             s = self.get_connection()
@@ -81,6 +84,7 @@ class Avisala_Callback(keras.callbacks.Callback):
             notification['model'] = self.model.name
             notification['event'] = 'on_epoch_end'
             notification['epoch'] = str(epoch)
+            notification['epochs'] = str(self.params['epochs'])
             notification['train_loss'] = str(logs.get('loss'))
             notification['validation_loss'] = str(logs.get('val_loss'))
             s = self.get_connection()

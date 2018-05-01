@@ -10,14 +10,16 @@ from keras.layers.core import Lambda
 from keras import optimizers
 from PIL import Image
 import os.path
+import os
 import random
 import socket
 import json
 import matplotlib.pyplot as plt
+import download_dataset_file
 import avisala
 
 
-DATA_DIRECTORY = 'data/'
+DATA_DIRECTORY = 'data'
 MINIBATCH_SIZE = 64
 # split dataset in train (70%), validation (10%) and test (20%)
 TRAIN_DATASET_SIZE = 0.7
@@ -25,7 +27,11 @@ VALIDATION_DATASET_SIZE = 0.1
 
 
 # datapoints in 'data/driving_log.csv' file contains filenames and steers
-df = pd.read_csv(DATA_DIRECTORY + 'driving_log.csv', header = None,
+
+if not os.path.isfile(DATA_DIRECTORY + os.sep + 'driving_log.csv'):
+    download_dataset_file.download_dataset_file(DATA_DIRECTORY)
+
+df = pd.read_csv(DATA_DIRECTORY + os.sep + 'driving_log.csv', header = None,
     names = ['file_image_center','file_image_left','file_image_right','steer','acc', 'break', 'speed'])
 
 # number of datapoints in whole dataset
@@ -47,7 +53,7 @@ idx_validation = idx[number_of_datapoints_in_train_dataset:(number_of_datapoints
 idx_test = idx[(number_of_datapoints_in_train_dataset+number_of_datapoints_in_validation_dataset):]
 
 # figure out image size
-file_image_center = DATA_DIRECTORY + 'IMG/' + df.iloc[0]['file_image_center']
+file_image_center = DATA_DIRECTORY +  os.sep + 'IMG' + os.sep + df.iloc[0]['file_image_center']
 image_center = Image.open(file_image_center)
 image_center = np.asarray(image_center)
 image_shape = image_center.shape
@@ -62,7 +68,7 @@ def get_data_generador(df, idx, chunk_size, image_shape, sub_dataset_type):
         np_image = np.zeros((this_chunk_size, image_shape[0], image_shape[1], image_shape[2]))
         np_steer = np.zeros((this_chunk_size))
         for i in range(this_chunk_size):
-            file_image_center = DATA_DIRECTORY + 'IMG/' + df.iloc[idx[i+idx_base_chunk]]['file_image_center']
+            file_image_center = DATA_DIRECTORY + os.sep + 'IMG' + os.sep + df.iloc[idx[i+idx_base_chunk]]['file_image_center']
             steer = df.iloc[idx[i+idx_base_chunk]]['steer']
             image_center = np.array(Image.open(file_image_center).convert("RGB"))
             np_image[i+0,:,:,:] = image_center
@@ -129,28 +135,20 @@ model.compile(optimizer=sgd, loss='mean_squared_error')
 
 # save trained model after each epoch
 callbacks_list = [
-    keras.callbacks.ModelCheckpoint(filepath='CarDriver.h5', monitor='val_loss', save_best_only=False),
+    keras.callbacks.ModelCheckpoint(filepath='model.h5', monitor='val_loss', save_best_only=False),
     avisala.Avisala_Callback('ios')
 ]
-
-#print ('number_of_datapoints_in_train_dataset', number_of_datapoints_in_train_dataset)
-#print ('number_of_datapoints_in_validation_dataset', number_of_datapoints_in_validation_dataset)
-#print ('number_of_datapoints_in_test_dataset', number_of_datapoints_in_test_dataset)
 
 # split indicex dataset
 idx_train = idx[:number_of_datapoints_in_train_dataset]
 idx_validation = idx[number_of_datapoints_in_train_dataset:(number_of_datapoints_in_train_dataset+number_of_datapoints_in_validation_dataset)]
 idx_test = idx[(number_of_datapoints_in_train_dataset+number_of_datapoints_in_validation_dataset):]
 
-#print ('idx_train', idx_train)
-#print ('idx_validation', idx_validation)
-#print ('idx_test', idx_test)
-
 # train the model
 history = model.fit_generator(
     get_data_generador(df, idx_train, MINIBATCH_SIZE, image_shape, 'train'),
     steps_per_epoch = int(number_of_datapoints_in_train_dataset / MINIBATCH_SIZE) + 1,
-    epochs = 10,
+    epochs = 4,
     validation_data = get_data_generador(df, idx_validation, MINIBATCH_SIZE, image_shape, 'validation'),
     validation_steps = int(number_of_datapoints_in_validation_dataset / MINIBATCH_SIZE) + 1,
     callbacks = callbacks_list
