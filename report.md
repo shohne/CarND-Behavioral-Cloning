@@ -3,7 +3,7 @@
 The goals of this project are:
 1. To build a model to drive the [Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim);
 * To define and obtain the appropriate dataset to train the driver model
-* To reflect about upon the pros and possible improvements in shown solution.
+* To evaluate the proposed solution on simulator.
 
 ### Pipeline
 The goal is predict the steer to drive [Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim). To perform this task, the driver needs to know the Car state on the road, in fact, Simulator captures and send some information to the controller. The controller has access to:
@@ -71,8 +71,8 @@ To train the model there should be a directory **data** with file **driving_log.
 
 We are using only center image and steer data, then it is OK to have fake data in filename right, left image, acceleration, break and speed. [Dataset file](https://s3-us-west-1.amazonaws.com/carnd-dataset-hohne/dataset_carnd_behavioral_cloning.zip) has the data used to obtain the trained [model.h5](model.h5). It has 46260 datapoints from 5 sources:
 
-* dataset provided by Udacity that contains data captured driving on track 1 ( datapoints);
-* driving on track 1 trying to keep the center of the lane ( datapoints);
+* dataset provided by Udacity that contains data captured driving on track 1 ( datapoints 8036);
+* driving on track 1 trying to keep the center of the lane (2085 datapoints);
 * driving on track 1 while trying to recover to the center of the lane ( datapoints);
 * driving on track 2 trying to keep the center of the lane ( datapoints);
 * driving on track 2 while trying to recover to the center of the lane ( datapoints).
@@ -96,6 +96,40 @@ Next step, starts to train the model calling the **get_data_generador** to provi
 
 ![Loss Train - Loss Validation X Epoch](train_history.png)
 
+Loss in test dataset is **0.01**.
 
-### Result
-### Conclusion
+### Autonomous Drive
+
+Now it is time to test the pipeline in Simulator. To accomplish this task, we should start Simulator in **Autonomous Mode** on track 1 then in a terminal execute drive.py script as:
+
+```
+python drive.py model.h5
+```
+
+This command will try to control simulator at speed 30. The result video could be seen in:
+
+![Track 1](video_track_1.mp4)
+
+This video shown only the first lap, but the model is able to drive for much more time (at least 30 minutes).
+
+To try something more challenge, choose track 2 and run the drive.py as:
+
+```
+python drive.py model.h5 25
+```
+
+We have modified the original **drive.py** script to allow change the desired speed, in this case to 25. The recorded video is:
+
+![Track 2](video_track_2.mp4)
+
+A more challenge task is to drive on track 2 at full speed (30) as:
+
+```
+python drive.py model.h5 25
+```
+
+That result in video:
+
+![Track 3](video_track_3.mp4)
+
+At full speed, we could see that drive is dangerous and, eventually, causes an accident.
