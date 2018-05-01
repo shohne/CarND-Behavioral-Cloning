@@ -36,25 +36,25 @@ The proposed model uses only the center image and try to predict the steering an
 We have used [keras](https://keras.io/) to define the model. Following table explicit each layer properties:
 
 
-Layer (type) | Output Shape | Param #   
--------------|--------------|---------
-image (InputLayer) | (160, 320, 3) | 0
-lambda_1 (Lambda) | (160, 320, 3) | 0
-conv_1 (Conv2D) | (160, 320, 24) | 7224
-relu_1 (Activation) | (160, 320, 24) | 0
-maxpool_1 (MaxPooling2D) | (79, 53, 24) | 0
-conv_2 (Conv2D) | (79, 53, 36) | 42372
-relu_2 (Activation) | (79, 53, 36) | 0
-maxpool_2 (MaxPooling2D) | (39, 8, 36) | 0
-conv_3 (Conv2D) | (39, 8, 48) | 43248
-relu_3 (Activation) | (39, 8, 48) | 0
-maxpool_3 (MaxPooling2D) | (19, 3, 48) | 0
-flatten_1 (Flatten) | (2736) | 0
-fc1 (Dense) | (512) | 1401344
-activation_1 (Activation) | (512) | 0
-dropout_fc1 (Dropout) | (512) | 0
-fc3 (Dense) | (16) | 8208
-predict_steer (Dense) | (1) | 17
+Layer (type) | Kernel | Filters | Stride | Output Shape | Param #   
+-------------|--------|---------|--------|--------------|--------
+image (InputLayer) | | | | (160, 320, 3) | 0
+lambda_1 (Lambda) | | | | (160, 320, 3) | 0
+conv_1 (Conv2D) | (10,10) | 24 | | (160, 320, 24) | 7224
+relu_1 (Activation) | | | | (160, 320, 24) | 0
+maxpool_1 (MaxPooling2D) | (3, 6) | | (2, 6) | (79, 53, 24) | 0
+conv_2 (Conv2D) | (7,7) | 36 | | (79, 53, 36) | 42372
+relu_2 (Activation) | | | | (79, 53, 36) | 0
+maxpool_2 (MaxPooling2D) | (3, 6) | | (2, 6) | (39, 8, 36) | 0
+conv_3 (Conv2D) | (5,5) | 48 | | (39, 8, 48) | 43248
+relu_3 (Activation) | | | | (39, 8, 48) | 0
+maxpool_3 (MaxPooling2D) | (3, 3) | | (2, 2) | (19, 3, 48) | 0
+flatten_1 (Flatten) | | | | (2736) | 0
+fc1 (Dense) | | | | (512) | 1401344
+activation_1 (Activation) | | | | (512) | 0
+dropout_fc1 (Dropout) | | | | (512) | 0
+fc3 (Dense) | | | | (16) | 8208
+predict_steer (Dense) | | | | (1) | 17
 
 Total params: **1,502,413**
 
