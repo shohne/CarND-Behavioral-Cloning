@@ -98,7 +98,7 @@ Next step, starts to train the model calling the **get_data_generador** to provi
 
 ![Loss Train - Loss Validation X Epoch](train_history.png)
 
-Loss in test dataset is **0.01**.
+Loss in test dataset is **0.035**.
 
 ### Autonomous Drive
 
