@@ -1,5 +1,8 @@
 import boto3
 import botocore
+from botocore import UNSIGNED
+from botocore.client import Config
+
 import zipfile
 import sys
 import threading
@@ -21,7 +24,7 @@ class ProgressPercentage(object):
             sys.stdout.flush()
 
 def download_dataset_file(dst_directory):
-    s3 = boto3.client('s3')
+    s3 = boto3.client('s3', config = Config(signature_version = UNSIGNED))
     print ('downloading dataset file...')
     s3.download_file(BUCKET_NAME, KEY, 'data.zip', Callback=ProgressPercentage("data.zip"))
     zip_ref = zipfile.ZipFile('data.zip', 'r')

@@ -37,8 +37,8 @@ df = pd.read_csv(DATA_DIRECTORY + os.sep + 'driving_log.csv', header = None,
 # number of datapoints in whole dataset
 dataset_length = df.shape[0]
 
-if dataset_length > 256:
-    dataset_length = 256
+#if dataset_length > 256:
+#    dataset_length = 256
 
 # auxiliary index to split and shuffle dataset
 idx = list(range(dataset_length))
@@ -147,13 +147,14 @@ idx_test = idx[(number_of_datapoints_in_train_dataset+number_of_datapoints_in_va
 history = model.fit_generator(
     get_data_generador(df, idx_train, MINIBATCH_SIZE, image_shape, 'train'),
     steps_per_epoch = int(number_of_datapoints_in_train_dataset / MINIBATCH_SIZE) + 1,
-    epochs = 4,
+    epochs = 120,
     validation_data = get_data_generador(df, idx_validation, MINIBATCH_SIZE, image_shape, 'validation'),
     validation_steps = int(number_of_datapoints_in_validation_dataset / MINIBATCH_SIZE) + 1,
     callbacks = callbacks_list
 )
 
 model.save('model.h5')
+
 
 fig = plt.figure()
 plt.plot(history.history['loss'])
