@@ -6,7 +6,7 @@ This repo contains the code written to complete the project **Behaviorial Clonin
 
 Prerequisites
 ---
-To run this project, you need [Anaconda 4.5.1](https://anaconda.org/conda-canary/conda/files?version=4.5.1) installed.
+To run this project, you need [Anaconda 4.5.1](https://anaconda.org/conda-canary/conda/files?version=4.5.1) installed. It was tested developed and tested in Windows 10 with CUDA 9 and CUDNN 7.1.
 
 Installation
 ---
@@ -26,7 +26,7 @@ The name of created environment is *carnd-behaviorial-cloning-hohne*.
 
 Activate the created conda environment:
 ```
-source activate carnd-behaviorial-cloning-hohne
+activate carnd-behaviorial-cloning-hohne
 ```
 Running the Simulator
 ---
