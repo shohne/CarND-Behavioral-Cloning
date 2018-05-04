@@ -36,22 +36,22 @@ python drive.py model.h5
 ```
 The controller should be able to drive for a long time. A recorded video of this execution could be seen in:
 
-[Track 1](video_track_1.mp3)
+[Track 1](video_track_1.mp4)
 
 This model is able to drive on track 2 (at reduced speed) too. To test it, just choose **Autonomous Mode**, **track 2** and execute the controller:
 ```
 python drive.py model.h5 25
 ```
 
-[Track 2](video_track_2.mp3)
+[Track 2](video_track_2.mp4)
 
 List of Main Files
 ---
 * **drive.py** python program responsible to receive images from the simulator and predict steering angle to keep car on track;
 * **model.py** python script that build keras neural model and train it;
 * **model.h5** pretrained keras model (using *model.py*);
-* **video_1.mp3** recorded video of simulator in **Autonomous Mode** driving on track 1 and using given *model.h5*;
-* **video_2.mp3** recorded video of simulator in **Autonomous Mode** driving on track 2 and using given *model.h5*;
+* **video_1.mp3** recorded video of simulator in **Autonomous Mode** driving on track 1 with **model.h5**;
+* **video_2.mp3** recorded video of simulator in **Autonomous Mode** driving on track 2 with **model.h5**;
 * **data** (directory) must contain dataset file **driving_log.csv** and **IMG** folder with captured images and labels;
 * **environment.yml** python dependencies;
 * **README.md**;

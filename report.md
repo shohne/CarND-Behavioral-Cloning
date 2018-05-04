@@ -98,7 +98,7 @@ Next step, starts to train the model calling the **get_data_generador** to provi
 
 ![Loss Train - Loss Validation X Epoch](train_history.png)
 
-Loss in test dataset is **0.035**.
+Loss in test dataset is **0.035**. How it is clear model is overfitting, we have tried use **Dropout** to fight it but was not able to decreased completely. 
 
 ### Autonomous Drive
 
